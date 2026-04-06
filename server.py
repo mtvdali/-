@@ -30,7 +30,9 @@ def index():
         # Run search
         query = fe.extract(img)
         dists = np.linalg.norm(features-query, axis=1)  # L2 distances to features
-        ids = np.argsort(dists)[:30]  # Top 30 results
+        # 只返回有效的结果数量
+        num_results = min(30, len(dists))
+        ids = np.argsort(dists)[:num_results]  # Top results
         scores = [(dists[id], img_paths[id]) for id in ids]
 
         return render_template('index.html',
@@ -41,4 +43,4 @@ def index():
 
 
 if __name__=="__main__":
-    app.run("0.0.0.0")
+    app.run("0.0.0.0", port=5001)

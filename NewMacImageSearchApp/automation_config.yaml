@@ -1,0 +1,68 @@
+# 自动化配置文件
+# NewMacImageSearchApp 自动化设置
+
+project:
+  name: "NewMacImageSearchApp"
+  path: "/Users/ootd/sis/NewMacImageSearchApp"
+  executable: "NewMacImageSearchApp"
+
+build:
+  auto_clean: true
+  build_type: "release"
+  swift_flags: "-Xswiftc -O"
+  
+automation:
+  # 监控设置
+  monitor:
+    enabled: true
+    watch_extensions: [".swift", ".py", ".json"]
+    cooldown_seconds: 5
+    
+  # 定时任务
+  scheduled_tasks:
+    - name: "daily_build"
+      time: "10:00"
+      command: "build"
+      
+    - name: "weekly_test"
+      day_of_week: "Monday"
+      time: "09:00"
+      command: "test"
+  
+  # 通知设置
+  notifications:
+    enabled: true
+    on_success: true
+    on_failure: true
+    
+  # 部署设置
+  deployment:
+    auto_deploy: false
+    target_path: "/Applications"
+    backup_old: true
+    
+  # 报告设置
+  reporting:
+    daily_report: true
+    email_report: false
+    email_address: ""
+    
+  # 备份设置
+  backup:
+    enabled: true
+    keep_days: 7
+    location: "~/Backups/NewMacImageSearchApp"
+    
+  # 健康检查
+  health_check:
+    enabled: true
+    check_interval: 3600  # 秒
+    checks:
+      - name: "disk_space"
+        warning_threshold_gb: 5
+        
+      - name: "memory_usage"
+        warning_threshold_percent: 80
+        
+      - name: "app_running"
+        check_command: "pgrep NewMacImageSearchApp"
